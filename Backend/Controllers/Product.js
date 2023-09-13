@@ -9,6 +9,7 @@ module.exports.CreateProduct = async (req, res) => {
             const createdProduct = await ProductModel.create({ ...req.body })
             return res.status(200).json({ product: createdProduct, msg: "product created" })
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ error: error.message })
         }
 
