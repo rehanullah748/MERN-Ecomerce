@@ -45,19 +45,15 @@ module.exports.updateProduct = async (req, res) => {
     const { id } = req.params;
     const errors = validationResult(req);
     if(errors.isEmpty()) {
-        if (id==="" || !id) {
+        if (id === "" || !id) {
             return res.status(400).json({msg: "id is required"})
         }
         else {
             try {
                 const result = await ProductModel.findByIdAndUpdate(id, req.body )
-                if (!result) {
-                    return res.status(404).json({ msg: "product not found" })
-                } else {
-                    return res.status(200).json({ msg: "product updated" })
+                return res.status(200).json({ msg: "product updated" })
                 }
-        
-            } catch (error) {
+             catch (error) {
                 return res.status(400).json({ error: error.message })
             }
         }
