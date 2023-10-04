@@ -3,6 +3,7 @@ const ProductModel = require("../Model/Product");
 
 module.exports.CreateProduct = async (req, res) => {
     const errors = validationResult(req);
+    console.log(req.body)
     if (errors.isEmpty()) {
         console.log(req.body)
         try {
@@ -14,7 +15,7 @@ module.exports.CreateProduct = async (req, res) => {
         }
 
     } else {
-        return res.status(400).json({ error: errors.array() })
+        return res.status(400).json({ errors: errors.array() })
     }
 }
 
@@ -54,11 +55,11 @@ module.exports.updateProduct = async (req, res) => {
                 return res.status(200).json({ msg: "product updated" })
                 }
              catch (error) {
-                return res.status(400).json({ error: error.message })
+                return res.status(500).json({ error: error.message })
             }
         }
     } else {
-        return res.status(500).json({errors: errors.array()})
+        return res.status(400).json({errors: errors.array()})
     }
     
 }

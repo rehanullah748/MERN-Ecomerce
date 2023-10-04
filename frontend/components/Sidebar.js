@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const Sidebar = () => {
@@ -147,7 +148,7 @@ const Sidebar = () => {
                         className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-md hover:bg-gray-100 dark:bg-gray-800 dark:text-slate-400 dark:hover:text-slate-300"
                         href="javascript:;"
                       >
-                        Link 1
+                        <Link href = 'all_product'></Link>
                       </a>
                     </li>
                     <li>

@@ -4,7 +4,7 @@ const productRoutes = require("./routes/productRoutes")
 var cors = require("cors");
 require("dotenv").config();
 const app = express();
-const port = 4000;
+const port = 8000;
 connect();
 app.use(express.json())
 app.use(cors())

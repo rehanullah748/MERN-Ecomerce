@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react'
-import Sidebar from '../components/Sidebar'
-import Footer from '../components/footer'
+import Sidebar from '../../components/Sidebar'
+
 
 export default function RootLayout({ children }) {
   useEffect(() => {
@@ -266,7 +266,7 @@ export default function RootLayout({ children }) {
     <header>
       
     {children}
-    <Footer/>
+    
     </header>
     {/* End Page Heading */}
   </div>

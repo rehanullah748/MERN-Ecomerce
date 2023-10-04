@@ -5,5 +5,6 @@ module.exports.ProductValidator = [
     body("category").not().isEmpty().trim().withMessage("category is required"),
     body("description").not().isEmpty().trim().withMessage("description is required"),
     body("discount").not().isEmpty().trim().withMessage("discount is required"),
-    body("stock").not().isEmpty().trim().withMessage("stock is required"),
+    body("quantities").not().isEmpty().trim().withMessage("quantities is required"),
+  
 ]

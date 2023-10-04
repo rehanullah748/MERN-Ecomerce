@@ -20,21 +20,25 @@ const ProductSchema = mongoose.Schema({
         required: true,
         type: String
     },
+    quantities: {
+        required: true,
+        type: Number
+    },
     sizes: {
         required: false,
-        type: Map,
+        type: [Map],
         enums: ['sm','xs','md','lg', 'xl']
     },
     colors: {
         required: false,
-        type: Map,
+        type: [Map]
     },
     discount: {
         type: Number,
         required: true
     },
     stock: {
-        required: true,
+        required: false,
         type: Number
     }
 }, {
