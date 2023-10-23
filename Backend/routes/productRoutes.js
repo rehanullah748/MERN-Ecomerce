@@ -3,7 +3,7 @@ const { CreateProduct, getAllProduct, productDetails, updateProduct, deleteProdu
 const { ProductValidator } = require("../Validations/ProductValidator");
 const router = express.Router();
 router.post('/product/create-product',ProductValidator, CreateProduct)
-router.get('/product/get-all-product', getAllProduct)
+router.get('/product/get-all-products', getAllProduct)
 router.get('/product/product-details/:id', productDetails)
 router.put('/product/update-product/:id',ProductValidator, updateProduct)
 router.delete('/product/delete-product/:id', deleteProduct)

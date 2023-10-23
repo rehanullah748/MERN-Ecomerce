@@ -20,11 +20,12 @@ module.exports.CreateProduct = async (req, res) => {
 }
 
 module.exports.getAllProduct = async (req, res) => {
+    console.log('hi boot')
     try {
         const gotProducts = await ProductModel.find({})
         return res.status(200).json(gotProducts)
     } catch (error) {
-        return res.status(400).json({ error: error.message })
+        return res.status(500).json({ error: error.message })
     }
 }
 

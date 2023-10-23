@@ -1,7 +1,4 @@
-
-import CreateProduct from '@/app/components/Form/CreateProduct'
-
-
+import CreateProduct from "@/components/Form/CreateProduct"
 
 const page = () => {
   

@@ -10,8 +10,12 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 import Spinner from '../Spinner';
 import { errorsConversion } from '@/Utils';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 const CreateProduct = () => {
+    const {push} = useRouter()
     const [state, setState] = useState({
         title: "",
         price: "",
@@ -21,7 +25,7 @@ const CreateProduct = () => {
         category: "",
         image: "",
         colors: [],
-        sizes: [],
+        
     })
     const [checked, setChecked] = useState({
         small: false,
@@ -35,6 +39,7 @@ const CreateProduct = () => {
       
   const checkBoxOnChange = (e) => {
     setChecked({...checked, [e.target.name]: e.target.checked})
+    console.log(checked)
   }
     const deleteColor = (color) => {
 
@@ -52,29 +57,38 @@ const CreateProduct = () => {
 
         setState({ ...state, [e.target.name]: e.target.value })
     }
+    const [imageLoader, setImageLoader] = useState(false)
     const fileTypes = ["JPG", "PNG", "JPEG"];
     const handleChange = async (img) => {
         const file = new FormData();
         file.append("file", img);
         file.append("upload_preset", "r4444res");
         file.append("cloud_name", "dgifwzl50");
+        setImageLoader(true)
         try {
             const { data } = await axios.post(
                 "https://api.cloudinary.com/v1_1/dgifwzl50/image/upload",
                 file
             );
             console.log(data)
+            setImageLoader(false)
             setState({ ...state, image: data.secure_url });
         } catch (error) {
-            console.log(error);
+            setImageLoader(false)
+            toast.error("image upload failed")
         }
     };
     const { error, isError, isSuccess, isLoading, mutate, data} = useMutation(data => {
         return axios.post('http://localhost:8000/api/product/create-product', data)
+        
+        
       })
-    console.log(data)
+      console.log(data)
+      
+   
     const CreateProduct = () => {
-        mutate({...state})
+        mutate({...state, sizes: checked})
+        console.log(sizes)
     }
     useEffect(() => {
         if(isError) {
@@ -84,7 +98,11 @@ const CreateProduct = () => {
                 setErrors(response);
                   }
         }
-    }, [isError])
+        if(isSuccess) {
+toast.success("product has been created")
+push("/dashboard/all_products")
+        }
+    }, [isError,isSuccess])
     console.log(errors)
     return (
         <>
@@ -96,12 +114,16 @@ const CreateProduct = () => {
                 <Input error={errors.price} type='number' placeholder='product price' name='price' value={state.price} onChange={onChange} />
                 <Input error={errors.quantities} type='number' placeholder='quantities' name='quantities' value={state.quantities} onChange={onChange} />
                 <Input error={errors.discount} type='text' placeholder='discount' name='discount' value={state.discount} onChange={onChange} />
-                <div>
+                 <div>
                 <select class="py-3 px-4 pr-9 block w-full outline-none border  border-gray-300 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400" name='category' value={state.category} onChange={onChange}>
                     <option selected >Select Category</option>
                     <option>Shoes</option>
                     <option>Clothes</option>
                     <option>Mobile</option>
+                    <option>computer accesseries</option>
+                    <option>cosmetices</option>
+                    <option>food</option>
+                    
                 </select>
                 {errors.category && (
               <span className="text-rose-600">{errors.category}</span>
@@ -118,7 +140,8 @@ const CreateProduct = () => {
                 </div>
 
                 <div>
-                    <FileUploader handleChange={handleChange} name="file"  types={fileTypes} />
+                    {imageLoader ? <Spinner/> : state.image ? <div className='w-full h-[200px] relative'><Image fill className='w-full h-full object-contain' src={state.image}/></div> :  <FileUploader handleChange={handleChange} name="file"  types={fileTypes} />}
+                   
                 </div>
             </div>
             <div className='flex w-4/12 mt-4'>

@@ -6,7 +6,7 @@ const ProductSchema = mongoose.Schema({
     },
     price: {
         required: true,
-        type: Number
+        type: String,
     },
     image: {
         required: false,
@@ -22,11 +22,11 @@ const ProductSchema = mongoose.Schema({
     },
     quantities: {
         required: true,
-        type: Number
+        type: String
     },
     sizes: {
         required: false,
-        type: [Map],
+        type: Map,
         enums: ['sm','xs','md','lg', 'xl']
     },
     colors: {
@@ -34,12 +34,12 @@ const ProductSchema = mongoose.Schema({
         type: [Map]
     },
     discount: {
-        type: Number,
+        type: String,
         required: true
     },
     stock: {
         required: false,
-        type: Number
+        type: String
     }
 }, {
     timestamps: true
