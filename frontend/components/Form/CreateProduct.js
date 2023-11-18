@@ -88,7 +88,7 @@ const CreateProduct = () => {
    
     const CreateProduct = () => {
         mutate({...state, sizes: checked})
-        console.log(sizes)
+        
     }
     useEffect(() => {
         if(isError) {
