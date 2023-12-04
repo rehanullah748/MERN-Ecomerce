@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import NextTopLoader from 'nextjs-toploader'
 import { Provider } from 'react-redux'
 import { store } from '@/Store'
+import AuthModel from '@/components/Models/AuthModel'
 
 const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
   reverseOrder={false}
 />
         <QueryClientProvider client={queryClient}>
+          <AuthModel/>
           {children} 
         </QueryClientProvider>
         </Provider>

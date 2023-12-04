@@ -1,16 +1,24 @@
 "use client"
+
+import cart from '@/Store/Reducers/cart'
 import { ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { Img } from 'react-image'
+import { useSelector } from 'react-redux'
 
  const Nav = () => {
+  const { cart } = useSelector((state) => state.cartReducer )
+  const { admin, user } = useSelector((state) => state.userReducer)
+  console.log(admin, user)
+  console.log(cart)
   return (
     <div classNameName='w-full'>
         <header className="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-white border-b text-sm py-2.5 sm:py-4 dark:bg-slate-900 dark:border-gray-700">
     <nav className="max-w-7xl flex basis-full items-center w-full mx-auto px-4 sm:px-6 lg:px-8" aria-label="Global">
       <div className="mr-5 md:mr-8">
-        <a className="flex-none text-xl font-semibold dark:text-white" href="#" aria-label="Brand"><Image src="/logo.jpeg" width={100} height={100}/></a>
+        <Link className="flex-none text-xl font-semibold dark:text-white" href="/" aria-label="Brand"><Image src="/logo.jpeg" width={100} height={100}/></Link>
       </div>
 
       <div className="w-full flex items-center justify-end ml-auto sm:justify-between sm:gap-x-3 sm:order-3">
@@ -37,8 +45,10 @@ import { Img } from 'react-image'
         <div className="flex flex-row items-center justify-end gap-2">
          
           <button type="button" className="relative mr-5 hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-white text-gray-700 align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-xs dark:bg-gray-800 dark:hover:bg-slate-800 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800" data-hs-offcanvas="#hs-offcanvas-right">
-            <span className='absolute flex items-center justify-center w-5 h-5 rounded-full text-white bg-black text-xs fond-medium right-0 top-0'>12</span>
+            <span className='absolute flex items-center justify-center w-5 h-5 rounded-full text-white bg-black text-xs fond-medium right-0 top-0'>{cart.length}</span>
+            
           <ShoppingBag />
+            
           </button>
 
           <div className="hs-dropdown relative inline-flex" data-hs-dropdown-placement="bottom-right">
@@ -87,20 +97,7 @@ import { Img } from 'react-image'
   </header>
    
 
-  <nav className="w-full sticky -top-px bg-white text-sm font-medium text-black ring-1 ring-gray-900 ring-opacity-5 border-t shadow-sm shadow-gray-100 pt-6 md:pb-6 -mt-px dark:bg-slate-900 dark:border-gray-800 dark:shadow-slate-700/[.7]" aria-label="Jump links">
-      <div className="max-w-7xl snap-x w-full flex items-center overflow-x-auto scrollbar-x px-4 sm:px-6 lg:px-8 pb-4 md:pb-0 mx-auto dark:scrollbar-x">
-        <div className="snap-center shrink-0 pr-5 sm:pr-8 sm:last-pr-0">
-          <a className="inline-flex items-center gap-x-2 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-500" href="#">Home</a>
-        </div>
-        <div className="snap-center shrink-0 pr-5 sm:pr-8 sm:last:pr-0">
-          <a className="inline-flex items-center gap-x-2 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-500" href="#">Products</a>
-        </div>
-        
-        
-        
-      
-      </div>
-    </nav>
+  
     </div>
   )
 }

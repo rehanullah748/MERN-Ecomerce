@@ -4,6 +4,7 @@ const ProductSchema = mongoose.Schema({
         required: true,
         type: String,
     },
+   
     slug: {
         required: true,
         type: String,
@@ -50,3 +51,4 @@ const ProductSchema = mongoose.Schema({
 });
 const ProductModel = mongoose.model('product', ProductSchema)
 module.exports = ProductModel
+
