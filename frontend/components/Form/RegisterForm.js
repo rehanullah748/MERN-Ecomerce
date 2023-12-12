@@ -1,15 +1,61 @@
-import React from 'react'
+"use client"
+import { errorsConversion } from '@/Utils'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
+import toast from 'react-hot-toast'
+import { useMutation } from 'react-query'
+import Spinner from '../Spinner'
 
 const RegisterForm = ({setForm}) => {
+  const { push } = useRouter()
+  const [state, setState] = useState({
+    name: "",
+    email: "",
+    password: ""
+  })
+  const [errors, setErrors] = useState([])
+
+  const onChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value })
+  }
+  const { error, isError, isSuccess, isLoading, mutate, data} = useMutation(data => {
+    return axios.post('http://localhost:8000/api/user/user-register', data)
+  })
+  console.log(`data = ${data}, error = ${error},`)
+const submitForm = (e) => {
+  e.preventDefault()
+    mutate({...state})  
+}
+useEffect(() => {
+  if(isError) {
+    if(error?.response?.status === 400) {
+      const response = errorsConversion(error?.response?.data?.errors)
+      setErrors(response)
+    }
+    
+  }
+  if(isSuccess) {
+    toast.success("user has been registered")
+    setForm("login")
+            }
+            
+
+},[isError,isSuccess])
+  console.log(errors)
   return (
     <div>
         <h3 className='text-lg font-medium text-gray-400 '>Create a new account</h3>
-        <form className='mt-5'>
-        <input type="text" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm outline-none focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Your Name"/>
-        <input type="email" class="mt-4 py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600 outline-none" placeholder="Your Email"/>
+        <form className='mt-5' onSubmit={submitForm}>
+        <input type="text"  className={`py-3 px-4 block w-full border ${errors.name ? "border-rose-600 " : "border-gray-200"}  rounded-lg text-sm outline-none focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600`} placeholder="Your Name" onChange={onChange} name='name' value={state.name}/>
+        {errors.name  && <span className='text-rose-600'>{errors.name}</span> }
+        <input type="email" className={`mt-4 py-3 px-4 block w-full border ${errors.email ? "border-rose-600" : " border-gray-200"} rounded-lg text-sm focus:border-gray-500 focus:ring-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600 outline-none`} placeholder="Your Email" name='email' value={state.email} onChange={onChange}/>
+        {errors.email  && <span className='text-rose-600'>{errors.email}</span> }
 <div class="w-full mt-4 outline-none ">
   <div class="relative">
-    <input id="hs-toggle-password" type="password" class="border py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Enter password" value=""/>
+    <input id="hs-toggle-password" type="password" className={`border py-3 px-4 block w-full ${errors.password ? "border-rose-600": "border-gray-200"}  rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600`} placeholder="Enter password" name='password' onChange={onChange} value={state.password}/>
+    {errors.password  && <span className='text-rose-600'>{errors.password}</span> }
     <button type="button" data-hs-toggle-password='{
         "target": "#hs-toggle-password"
       }' class="absolute top-0 end-0 p-3.5 rounded-e-md dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
@@ -24,7 +70,8 @@ const RegisterForm = ({setForm}) => {
     </button>
   </div>
 </div>
-<input type="submit" value="sign up" class="capitalize mt-6 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-gray-800 text-white hover:bg-gray-900 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 dark:bg-white dark:text-gray-800"/>
+{isLoading ? <Spinner/> : <input type="submit" value="sign up" class="capitalize mt-6 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-gray-800 text-white hover:bg-gray-900 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 dark:bg-white dark:text-gray-800"/>}
+
 <span onClick={() => setForm("login")} className='block mt-5 text-sm font-medium text-gray-400 cursor-pointer'>Already have an account?</span>
         </form>
     </div>
