@@ -3,11 +3,14 @@ import axios from 'axios'
 import Navebar from '@/components/Navebar'
 import CountProducts from '@/components/CountProducts';
 import { BsCart } from 'react-icons/bs';
+import { check_auth } from '@/app/actions';
 
 
 const fetchDetails = async (slug) => {
+  console.log(slug)
     try {
         const { data } = await axios.get(`http://localhost:8000/api/product/${slug}`)
+        console.log(data)
         return data;
     } catch (error) {
         
@@ -16,14 +19,15 @@ const fetchDetails = async (slug) => {
 }
 
 const page = async(props) => {
-    console.log(props)
+  const auth = await check_auth();
+  console.log("checking auth", auth)
     const details = await fetchDetails(props.params.slug)
     console.log(details)
    
   return (
  <>
  <div>
-    <Navebar/>
+    <Navebar auth={auth}/>
     
   <div className='max-w-screen-xl mx-auto my-20'>
     
@@ -38,9 +42,10 @@ const page = async(props) => {
             
             </div>
             <>
-               
+                
       <div>
-        <CountProducts details={details}/>
+        <CountProducts auth={auth} details={details}/>
+
       </div>
      
             </>

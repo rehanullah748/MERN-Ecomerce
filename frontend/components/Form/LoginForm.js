@@ -2,6 +2,7 @@
 import { closeModel } from '@/Store/Reducers/userReducer'
 import { errorsConversion } from '@/Utils'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -9,6 +10,7 @@ import { useMutation } from 'react-query'
 import { useDispatch } from 'react-redux'
 
 const LoginForm = ({setForm}) => {
+  const { refresh} = useRouter()
   const dispatch = useDispatch()
   const [errors, setErrors] = useState([])
   const [state, setState] =useState({
@@ -20,7 +22,7 @@ const LoginForm = ({setForm}) => {
     setState({...state, [e.target.name]: e.target.value})
   }
   const { error, isError, isSuccess, isLoading, mutate, data} = useMutation(data => {
-    return axios.post('http://localhost:8000/api/user/user-login', data)
+    return axios.post('http://localhost:8000/api/user/user-login', data, {withCredentials:true})
   })
   console.log(`data = ${data}, error = ${error},`)
 
@@ -39,6 +41,7 @@ if(isError) {
 if(isSuccess) {
   toast.success("user logdIn successfully")
    dispatch(closeModel())
+   window.location.reload()
 }
 
   },[isError, isSuccess])

@@ -110,11 +110,13 @@ module.exports.getHomeProducts = async (req, res) => {
 
 module.exports.getProductDetails = async(req, res) => {
     const { slug } = req.params
+    console.log(slug)
     if(!slug || slug==="") {
         return res.status(400).json({error: "slug is required" })
     }
     try {
        const details = await ProductModel.findOne({slug}) 
+       console.log(details)
        if(!details) {
         return res.status(404).json({error: "details not found"})
        }

@@ -46,7 +46,7 @@ const HomeProducts = () => {
   
   return (
     <div className='max-w-[1200px] w-full mx-auto mt-20'>
-      <div className='grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>{
+      <div className='grid  grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full h-full'>{
         isFetching ? "loading" : products?.length > 0 && products?.map((product) => {
           return (
             <Link href={`/product/${product?.slug}`} key={product._id} className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">

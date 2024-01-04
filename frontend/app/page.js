@@ -1,19 +1,15 @@
 import Header from '@/components/Header'
 import HomeProducts from '@/components/Home/HomeProducts'
 import Nav from '@/components/Navebar'
-import { jwtDecode } from 'jwt-decode'
-import { cookies } from 'next/headers'
+import { check_auth } from './actions'
 
-export default function Home() {
-  const cookieStore = cookies()
- console.log(cookieStore)
-  const shopUser = cookieStore.get('shopUser')
-  console.log(shopUser)
-  // const token = jwtDecode(shopUser.value)
-  // console.log(token)
+export default async function Home() {
+  const auth =await check_auth()
+  console.log(auth)
+ 
   return (
     <>
-      <Nav/> 
+      <Nav auth={auth}/>
       <Header/>
       <HomeProducts/>
       

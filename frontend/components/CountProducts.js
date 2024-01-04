@@ -1,13 +1,15 @@
 "use client"
 import { addToCart } from '@/Store/Reducers/cart'
-import { addUser } from '@/Store/Reducers/userReducer'
+import { check_auth } from '@/app/actions';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai' 
+import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 
-const CountProducts = ({details}) => {
+
+const CountProducts = ({details, auth}) => {
+  
   console.log(details.colors[0].color)
   const [selectedColor, setSelectedColor] = useState('')
   const [selectedSize, setSelectedSize] = useState([])
@@ -65,11 +67,11 @@ const CountProducts = ({details}) => {
                   toast.error("please choose a size")
                  }else{
                    
-          dispatch(addToCart({...details,userQuantities:count,selectedColor,selectedSize}))
+          dispatch(addToCart({...details,userQuantities:count,selectedColor,selectedSize, userId: auth?.user?._id}))
                  }
           }else{
                   
-          dispatch(addToCart({...details,userQuantities:count,selectedColor}))
+          dispatch(addToCart({...details,userQuantities:count,selectedColor, userId: auth?.user?._id }))
           }
           }} className='text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  h-11 md:h-12 px-5 bg-heading text-white py-2 transform-none normal-case bg-black hover:text-white hover:bg-gray-600 hover:shadow-cart hover:cursor-pointer w-full md:w-6/12 xl:w-full  hover:bg-gray-400' >Add to Cart </button>
     
