@@ -14,7 +14,7 @@ export const check_auth = async () => {
     const expires_in = new Date(decoded.exp * 1000) 
     console.log(expires_in)
    if(new Date() > expires_in){
-    cookieStore.delete("shopUser")
+    axios.post('http://localhost:8000/api/user/user-logout', {}, {withCredentials:true})
     return {auth: false, user: null}
    }
    else {

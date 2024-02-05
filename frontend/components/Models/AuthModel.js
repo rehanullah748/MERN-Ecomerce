@@ -8,12 +8,15 @@ import { IoClose } from "react-icons/io5"
 import { closeModel } from "@/Store/Reducers/userReducer"
 
 const AuthModel = () => {
+  
     const [form, setForm] = useState("register")
     const { model } = useSelector((state) => state.userReducer)
+    
+    
     const dispatch = useDispatch()
     
     console.log(model)
-  return model ? (
+  return  model ? (
     <div className='  flex items-center justify-center fixed inset-0 bg-black/40 w-full h-full z-[99999] px-7 py-8'>
       <div className="absolute top-2 right-2 text-white text-lg cursor-pointer" onClick={() => dispatch(closeModel())}><IoClose /></div>
         <motion.div

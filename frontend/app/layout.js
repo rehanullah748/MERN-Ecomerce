@@ -8,6 +8,7 @@ import NextTopLoader from 'nextjs-toploader'
 import { Provider } from 'react-redux'
 import { store } from '@/Store'
 import AuthModel from '@/components/Models/AuthModel'
+import CartModel from '@/components/Models/CartModel'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
 />
         <QueryClientProvider client={queryClient}>
           <AuthModel/>
+          <CartModel/>
           {children} 
         </QueryClientProvider>
         </Provider>

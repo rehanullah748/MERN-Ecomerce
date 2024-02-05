@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  user: [], 
-  admin: {},
-  model: false
+  user: null, 
+  model: false,
+  cartModel: false
 }
 
 export const userReducer = createSlice({
@@ -16,10 +16,16 @@ export const userReducer = createSlice({
     },
      closeModel: (state) => {
       state.model = false;
+     },
+     toggleModel:(state) => {
+      state.cartModel = !state.cartModel;
+     },
+     setUser:(state,{payload}) => {
+      state.user = payload
      }
   },
 })
 
-export const { openModel, closeModel } = userReducer.actions
+export const { openModel, closeModel, toggleModel, setUser } = userReducer.actions
 
 export default userReducer.reducer

@@ -1,7 +1,7 @@
 "use client"
 
 
-import { openModel } from '@/Store/Reducers/userReducer'
+import { openModel, setUser, toggleModel } from '@/Store/Reducers/userReducer'
 import axios from 'axios'
 import { FileJson2Icon, LogOut, ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
@@ -14,13 +14,14 @@ import { useMutation } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 
  const Nav = ({auth}) => {
-  console.log(auth)
+  const [cartLength, setCartLength] = useState(0)
 
   const [profile, setProfile] = useState(null)
-  console.log(auth)
+  
   const { refresh } = useRouter()
-  const { cart } = useSelector((state) => state.cartReducer )
-  const { admin, user, model } = useSelector((state) => state.userReducer)
+  const { cart } = useSelector((state) => state.cartReducer)
+  const { model } = useSelector((state) => state.userReducer)
+  
   console.log(model)
   const dispatch = useDispatch();
   const { error, isError, isSuccess, isLoading, mutate, data} = useMutation(() => {
@@ -39,7 +40,10 @@ if(isSuccess) {
  
   setProfile(auth)
   },[])
-  console.log(profile)
+  useEffect(() => {
+    const cartProducts = cart.filter(item => item.userId === auth?.user?._id)
+    setCartLength(cartProducts?.length)
+  },[cart, auth])
   return (
     <div classNameName='w-full'>
         <header className="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-white border-b text-sm py-2.5 sm:py-4 dark:bg-slate-900 dark:border-gray-700">
@@ -71,8 +75,11 @@ if(isSuccess) {
 
         <div className="flex flex-row items-center justify-end gap-2">
          
-          <button type="button" className="relative mr-5 hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-white text-gray-700 align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-xs dark:bg-gray-800 dark:hover:bg-slate-800 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800" data-hs-offcanvas="#hs-offcanvas-right">
-            <span className='absolute flex items-center justify-center w-5 h-5 rounded-full text-white bg-black text-xs fond-medium right-0 top-0'>{cart.length}</span>
+          <button onClick={() =>{
+            dispatch(toggleModel()),
+            dispatch(setUser(auth?.user))
+          }} type="button" className="relative mr-5 hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-white text-gray-700 align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-xs dark:bg-gray-800 dark:hover:bg-slate-800 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800" data-hs-offcanvas="#hs-offcanvas-right">
+            <span className='absolute flex items-center justify-center w-5 h-5 rounded-full text-white bg-black text-xs fond-medium right-0 top-0'>{cartLength}</span>
             
           <ShoppingBag />
             
